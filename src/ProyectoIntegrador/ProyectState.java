@@ -10,6 +10,10 @@ public abstract class ProyectState {
 	public static final int kInitProyectos = 6;
 	public static final int kProyectos = 7;
 	public static final int kfreeProyectos = 8;
+	public static final int kInitAddProyectos = 9;
+	public static final int kAddProyectos = 10;
+	public static final int kInitGestionUsuariosProyectos = 11;
+	public static final int kGestionUsuariosProyectos = 12;
 	public static final int kMaquinas = 600;
 	
 

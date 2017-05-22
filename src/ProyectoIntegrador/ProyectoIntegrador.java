@@ -3,7 +3,7 @@ package ProyectoIntegrador;
 import java.awt.Color;
 
 import GraphLib.*;
-//TODO Separar en Modelo Vista y Controlador, deando esta clase como principal
+
 public class ProyectoIntegrador extends GLgraphicLib{
 
 	private static final long serialVersionUID = 7331311049809494647L;
@@ -96,6 +96,27 @@ public class ProyectoIntegrador extends GLgraphicLib{
 			case ProyectState.kfreeProyectos:{
 				freeProyectos();
 				break;
+			}
+			case ProyectState.kInitAddProyectos:{
+				vistaAddProyectos();
+				proyect_state_ = ProyectState.kAddProyectos;
+				break;
+			}
+			case ProyectState.kAddProyectos:{
+				controladorAddProyectos();
+				break;
+			}
+			case ProyectState.kInitGestionUsuariosProyectos:{
+				vistaGestionUsuariosProyectos();
+				proyect_state_ = ProyectState.kGestionUsuariosProyectos;
+				break;
+			}
+			case ProyectState.kGestionUsuariosProyectos:{
+				
+				break;
+			}
+			default:{
+				System.out.println("FATAL ERROR");
 			}
 		
 		}
@@ -438,7 +459,7 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		btn_.text_.setColor(Color.black);
 		btn_.text_.setStyle(GLgameConstants.kBOLD);
 		btn_.text_.applyChanges();
-		btn_.changeTextOffset(55, 35);
+		btn_.changeTextOffset(53, 35);
 		addObject(btn_);
 		
 		btn2_ = new GLbuttongo(350,250, 270, 60, Color.red);
@@ -452,7 +473,7 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		btn2_.text_.setColor(Color.black);
 		btn2_.text_.setStyle(GLgameConstants.kBOLD);
 		btn2_.text_.applyChanges();
-		btn2_.changeTextOffset(55, 35);
+		btn2_.changeTextOffset(53, 35);
 		btn2_.disable();
 		addObject(btn2_);
 		
@@ -472,15 +493,32 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		addObject(btn3_);
 		
 		btn4_ = new GLbuttongo(970,250, 270, 60, Color.red);
-		btn4_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn4_.loadImages("./Sprites/button.png", 
+				"./Sprites/button_over.png", 
+				"./Sprites/button_clicked.png", 
+				"./Sprites/button_disabled.png");
 		btn4_.useImages(true);
-		btn4_.text_.str_ = "Menu principal";
+		btn4_.text_.str_ = "Gestion Usuarios";
 		btn4_.text_.setSize(25);
 		btn4_.text_.setColor(Color.black);
 		btn4_.text_.setStyle(GLgameConstants.kBOLD);
 		btn4_.text_.applyChanges();
-		btn4_.changeTextOffset(55, 35);
+		btn4_.changeTextOffset(38, 35);
+		btn4_.disable();
 		addObject(btn4_);
+		
+		btn5_ = new GLbuttongo(980, 100, 260, 140, Color.black);
+		btn5_.loadImages("./Sprites/return.png",
+				"./Sprites/return_over.png",
+				"./Sprites/return_clicked.png");
+		btn5_.useImages(true);
+		btn5_.text_.str_ = "Menu principal";
+		btn5_.text_.setSize(25);
+		btn5_.text_.setColor(Color.black);
+		btn5_.text_.setStyle(GLgameConstants.kBOLD);
+		btn5_.text_.applyChanges();
+		btn5_.changeTextOffset(48, 77);
+		addObject(btn5_);
 		
 		table1_ = new GLtablego(40,400, 2,15, 575, 30,8);
 		table1_.setHeaderText(0, "Proyectos");
@@ -538,21 +576,31 @@ public class ProyectoIntegrador extends GLgraphicLib{
 	}
 	
 	private void controladorProyectos(){
-		if(btn4_.getisClicked()){
-			freeProyectos();
-			proyect_state_ = ProyectState.kInitMainMenu;
-		}
-		
-		if(btn2_.getisClicked()){
-			System.out.println("ELIMINAR");
-		}
-		
-		if(table1_.getGlobalRowSelected() !=0){
+		int selectedrow = table1_.getGlobalfilaSelected();
+		if( selectedrow !=0){
 			btn2_.enable();
 			btn3_.enable();
+			btn4_.enable();
+			
 		}else{
 			btn2_.disable();
 			btn3_.disable();
+			btn4_.disable();
+		}
+		
+		if(btn_.getisClicked()){
+			proyect_state_ = ProyectState.kInitAddProyectos;
+			freeProyectos();
+			
+		}else if(btn2_.getisClicked()){
+			table1_.deleteFila(selectedrow);			
+			System.out.println("ELIMINAR");
+		}else if(btn5_.getisClicked()){
+			freeProyectos();
+			proyect_state_ = ProyectState.kInitMainMenu;
+		}else if(btn4_.getisClicked()){
+			freeProyectos();
+			proyect_state_ = ProyectState.kInitGestionUsuariosProyectos;
 		}
 		
 	}
@@ -562,14 +610,185 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		destroyObject(btn2_);
 		destroyObject(btn3_);
 		destroyObject(btn4_);
+		destroyObject(btn5_);
 		destroyObject(text1_);
 		destroyObject(table1_);
 		btn_ = null;
 		btn2_ = null;
 		btn3_ = null;
 		btn4_ = null;
+		btn5_ = null;
 		text1_ = null;
 		table1_ = null;
+	}
+	
+	private void vistaAddProyectos(){
+		
+		text1_ = new GLtextgo(300,120, "Añadir proyecto");
+		text1_.setSize(80);
+		text1_.setColor(new Color(0, 6, 91));
+		text1_.setStyle(GLgameConstants.kBOLD);
+		text1_.setType("Sans");
+		text1_.applyChanges();
+		addObject(text1_);
+		
+		btn_ = new GLbuttongo(180,550, 400, 80, Color.red);
+		btn_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn_.useImages(true);
+		btn_.text_.str_ = "Guardar";
+		btn_.text_.setSize(25);
+		btn_.text_.setColor(Color.black);
+		btn_.text_.setStyle(GLgameConstants.kBOLD);
+		btn_.text_.applyChanges();
+		btn_.changeTextOffset(130, 42);
+		addObject(btn_);
+		
+		btn2_ = new GLbuttongo(700,550, 400, 80, Color.red);
+		btn2_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn2_.useImages(true);
+		btn2_.text_.str_ = "Descartar";
+		btn2_.text_.setSize(25);
+		btn2_.text_.setColor(Color.black);
+		btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		btn2_.text_.applyChanges();
+		btn2_.changeTextOffset(130, 42);
+		addObject(btn2_);
+		
+		textarea_ = new GLtextareago(60, 290, 20, 650, 40);
+		textarea_.text_.setSize(20);
+		textarea_.text_.setColor(Color.black);
+		textarea_.text_.applyChanges();
+		textarea_.setColorChanges(new Color(58, 75, 180), 
+				new Color(58, 75, 255), 
+				new Color(86, 101, 255));
+		textarea_.setTextOffset(30, 28);
+		textarea_.setOverText("Nombre del proyecto*");
+		addObject(textarea_);
+		
+		textarea2_ = new GLtextareago(60, 430, 80, 950, 40);
+		textarea2_.text_.setSize(20);
+		textarea2_.text_.setColor(Color.black);
+		textarea2_.text_.applyChanges();
+		textarea2_.setColorChanges(new Color(58, 75, 180), 
+				new Color(58, 75, 255), 
+				new Color(86, 101, 255));
+		textarea2_.setTextOffset(30, 28);
+		textarea2_.setOverText("Descripción");
+		addObject(textarea2_);
+		
+
+	}
+	
+	private void controladorAddProyectos(){
+		if(btn_.getisClicked()){
+			freeAddProyectos();
+			proyect_state_ = ProyectState.kInitProyectos;
+		}else if(btn2_.getisClicked()){
+			freeAddProyectos();
+			proyect_state_ = ProyectState.kInitProyectos;
+		}
+	}
+	
+	private void freeAddProyectos(){
+		destroyObject(btn_);
+		destroyObject(btn2_);
+		destroyObject(textarea_);
+		destroyObject(textarea2_);
+		destroyObject(text1_);
+		btn_ = null;
+		btn2_ = null;
+		textarea_ = null;
+		textarea2_ = null;
+		text1_ = null;
+	}
+	
+	private void vistaGestionUsuariosProyectos(){
+		text1_ = new GLtextgo(300,120, "Gestión usuarios");
+		text1_.setSize(80);
+		text1_.setColor(new Color(0, 6, 91));
+		text1_.setStyle(GLgameConstants.kBOLD);
+		text1_.setType("Sans");
+		text1_.applyChanges();
+		addObject(text1_);
+		
+		btn_ = new GLbuttongo(40,250, 270, 60, Color.red);
+		btn_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn_.useImages(true);
+		btn_.text_.str_ = "Añadir Usuario";
+		btn_.text_.setSize(23);
+		btn_.text_.setColor(Color.black);
+		btn_.text_.setStyle(GLgameConstants.kBOLD);
+		btn_.text_.applyChanges();
+		btn_.changeTextOffset(53, 35);
+		addObject(btn_);
+		
+		btn2_ = new GLbuttongo(350,250, 270, 60, Color.red);
+		btn2_.loadImages("./Sprites/button.png", 
+				"./Sprites/button_over.png", 
+				"./Sprites/button_clicked.png",
+				"./Sprites/button_disabled.png");
+		btn2_.useImages(true);
+		btn2_.text_.str_ = "Eliminar usuario";
+		btn2_.text_.setSize(21);
+		btn2_.text_.setColor(Color.black);
+		btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		btn2_.text_.applyChanges();
+		btn2_.changeTextOffset(53, 35);
+		btn2_.disable();
+		addObject(btn2_);
+		
+		
+		btn5_ = new GLbuttongo(980, 100, 260, 140, Color.black);
+		btn5_.loadImages("./Sprites/return.png",
+				"./Sprites/return_over.png",
+				"./Sprites/return_clicked.png");
+		btn5_.useImages(true);
+		btn5_.text_.str_ = "Proyectos";
+		btn5_.text_.setSize(25);
+		btn5_.text_.setColor(Color.black);
+		btn5_.text_.setStyle(GLgameConstants.kBOLD);
+		btn5_.text_.applyChanges();
+		btn5_.changeTextOffset(48, 77);
+		addObject(btn5_);
+		
+		table1_ = new GLtablego(40,400, 3,15, 400, 30,8);
+		table1_.setHeaderText(0, "Nombre");
+		table1_.setHeaderText(1, "Apellidos");
+		table1_.setHeaderText(2, "Participa");
+		table1_.changeHeaderTextOffset(15, 22);
+		table1_.changeCellTextOffset(15, 22);
+		addObject(table1_);
+		
+		
+		
+		/************************
+		 * 		Just for testing
+		 ************************/
+		
+		table1_.addData(0, 0, "Usuario1");
+		table1_.addData(1, 0, "Apellido1");
+		table1_.addData(2, 0, "No");
+		table1_.addData(0, 1, "Usuario2");
+		table1_.addData(1, 1, "Apellido2");
+		table1_.addData(2, 1, "No");
+		table1_.addData(0, 2, "Usuario3");
+		table1_.addData(1, 2, "Apellido3");
+		table1_.addData(2, 2, "No");
+		table1_.addData(0, 3, "Usuario4");
+		table1_.addData(1, 3, "Apellido4");
+		table1_.addData(2, 3, "No");
+		table1_.addData(0, 4, "Usuario5");
+		table1_.addData(1, 4, "Apellido5");
+		table1_.addData(2, 4, "No");
+		table1_.addData(0, 5, "Usuario6");
+		table1_.addData(1, 5, "Apellido7");
+		table1_.addData(2, 5, "No");
+		
+		/************************
+		 * 		Just for testing
+		 ************************/
+		
+		
 	}
 	
 }
