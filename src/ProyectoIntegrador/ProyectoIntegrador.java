@@ -33,8 +33,15 @@ public class ProyectoIntegrador extends GLgraphicLib{
 	GLimagego img3_;
 	
 	GLtablego table1_;
+	GLtablego table2_;
+	GLtablego table3_;
 	
 	GLtextgo text1_;
+	GLtextgo text2_;
+	GLtextgo text3_;
+	GLtextgo text4_;
+	GLtextgo text5_;
+	GLtextgo text6_;
 	
 	int proyect_state_;
 	
@@ -116,7 +123,45 @@ public class ProyectoIntegrador extends GLgraphicLib{
 			case ProyectState.kGestionUsuariosProyectos:{
 				
 				break;
-			}
+			}case ProyectState.kInitMaquinas:{
+			    InitMaquinas();
+			    proyect_state_ = ProyectState.kMaquinas;
+			    break;
+			   }
+			   case ProyectState.kMaquinas:{
+			       Maquinas();
+			    break;
+			   }
+			   case ProyectState.kInitNuevaMaq:{
+			    Maquinas();
+			    InitNuevamaq();
+			    proyect_state_ = ProyectState.kNuevaMaq;
+			    break;
+			    }
+			   case ProyectState.kNuevaMaq:{
+			     NuevaMaq();
+			     break;
+			    }
+			   case ProyectState.kInitMateriales:{
+			    freeLogin();
+			    InitMateriales();
+			    proyect_state_ = ProyectState.kMateriales;
+			    break;
+			   }
+			   case ProyectState.kMateriales:{
+			    Materiales();
+			    break;
+			   }
+			   case ProyectState.kInitNuevoMat:{
+			    Materiales();
+			    InitNuevoMat();
+			    proyect_state_ = ProyectState.kNuevoMat;
+			    break;
+			    }
+			   case ProyectState.kNuevoMat:{
+			    NuevoMat();
+			    break;
+			    }
 			default:{
 				System.out.println("FATAL ERROR");
 			}
@@ -502,10 +547,25 @@ public class ProyectoIntegrador extends GLgraphicLib{
 	}
 	
 	private void controladorMainMenu(){
-		if(btn2_.getisClicked()){
+		if(btn_.getisClicked()){
+			//freeMainMenu();
+			
+		}else if(btn2_.getisClicked()){
 			freeMainMenu();
 			proyect_state_ = ProyectState.kInitProyectos;
-		}else if(btn8_.getisClicked()){
+		}else if(btn3_.getisClicked()){
+			//freeMainMenu();
+		}else if(btn4_.getisClicked()){
+			//freeMainMenu();
+		}else if(btn5_.getisClicked()){
+			freeMainMenu();
+			proyect_state_ = ProyectState.kInitMateriales;
+		}else if(btn6_.getisClicked()){
+			freeMainMenu();
+			proyect_state_ = ProyectState.kInitMaquinas;
+		}else if(btn7_.getisClicked()){
+			//freeMainMenu();
+		}else if(btn8_.getisClicked()){	
 			freeMainMenu();
 			proyect_state_ = ProyectState.kInitLogin;
 		}
@@ -872,6 +932,780 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		
 		
 	}
+	
+
+
+
+
+
+
+
+
+
+/**********************************************
+ **********************************************
+ *  		AUTHOR PAULA LABANDA
+ *********************************************
+ **********************************************/
+	
+	 private void InitMaquinas(){
+		  
+		  btn_ = new GLbuttongo(100,600, 400, 80, Color.red);
+		  btn_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		  btn_.useImages(true);
+		  btn_.text_.str_ = "Menú principal";
+		  btn_.text_.setSize(25);
+		  btn_.text_.setColor(Color.black);
+		  btn_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn_.text_.applyChanges();
+		  btn_.changeTextOffset(110, 42);
+		  addObject(btn_);
+		  
+		  
+		  btn4_ = new GLbuttongo(800,300, 400, 80, Color.red);
+		  btn4_.useImages(true);
+		  btn4_.text_.str_ = "Modificar";
+		  btn4_.text_.setSize(25);
+		  btn4_.text_.setColor(Color.black);
+		  btn4_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn4_.text_.applyChanges();
+		  btn4_.changeTextOffset(150, 42);
+		  addObject(btn4_);
+		  
+		  btn5_ = new GLbuttongo(800,200, 400, 80, Color.red);
+		  btn5_.useImages(true);
+		  btn5_.text_.str_ = "Añadir a proyecto";
+		  btn5_.text_.setSize(25);
+		  btn5_.text_.setColor(Color.black);
+		  btn5_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn5_.text_.applyChanges();
+		  btn5_.changeTextOffset(110, 42);
+		  addObject(btn5_);
+		  
+		  btn6_ = new GLbuttongo(800,400, 400, 80, Color.red);
+		  btn6_.useImages(true);
+		  btn6_.text_.str_ = "Eliminar";
+		  btn6_.text_.setSize(25);
+		  btn6_.text_.setColor(Color.black);
+		  btn6_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn6_.text_.applyChanges();
+		  btn6_.changeTextOffset(150, 42);
+		  addObject(btn6_);
+		   
+		  
+		  btn2_ = new GLbuttongo(800,600, 400, 80, Color.red);
+		  btn2_.useImages(true);
+		  btn2_.text_.str_ = "Nueva máquina";
+		  btn2_.text_.setSize(25);
+		  btn2_.text_.setColor(Color.black);
+		  btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn2_.text_.applyChanges();
+		  btn2_.changeTextOffset(110, 42);
+		  addObject(btn2_);
+
+		  
+		  
+		 
+		  table2_ = new GLtablego(70,250, 4,6, 170, 60,4);
+		  table2_.setHeaderText(0, "Cod_Máquina");
+		  table2_.setHeaderText(1, "Nombre");
+		  table2_.setHeaderText(2, "Descripción");
+		  table2_.setHeaderText(3, "Estado");
+		  table2_.changeHeaderTextOffset(15, 22);
+		  table2_.changeCellTextOffset(15, 22);
+		  addObject(table2_);
+		  
+		  
+		  table2_.addData(0, 0, "1");
+		  table2_.addData(1, 0, "Maq 1");
+		  
+		  table2_.addData(2, 0, "Máquina para proyectos");
+		  
+		  table2_.addData(3, 0, "Bueno");
+		  table2_.addData(0, 1, "2");
+		  table2_.addData(1, 1, "Maq 2");
+		  
+		  table2_.addData(2, 1, "Máquina para proyectos");
+		  
+		  table2_.addData(3, 1, "Bueno");
+		  table2_.addData(0, 2, "3");
+		  table2_.addData(1, 2, "Maq 3");
+		  
+		  table2_.addData(2, 2, "Máquina para proyectos");
+		  
+		  table2_.addData(3, 2, "Arreglando");
+		  table2_.addData(0, 3, "4");
+		  table2_.addData(1, 3, "Maq 4");
+		  
+		  table2_.addData(2, 3, "Máquina para proyectos");
+		  table2_.addData(3, 3, "Bueno");
+		  
+		  table2_.addData(0, 4, "5");
+		  
+		  table2_.addData(1, 4, "Maq 5");
+		  
+		  table2_.addData(2, 4, "Máquina para proyectos");
+		 
+		  table2_.addData(3, 4, "Bueno");
+		  
+		     table2_.addData(0, 5, "6");
+		  
+		  table2_.addData(1, 5, "Maq 6");
+		  
+		  table2_.addData(2, 5, "Máquina para proyectos");
+		 
+		  table2_.addData(3, 5, "Bueno");
+		  
+		 }
+
+
+	 private void InitNuevamaq(){
+		  
+		  textarea_ = new GLtextareago(400, 240, 15, 400, 40);
+		  textarea_.text_.setSize(20);
+		  textarea_.text_.setColor(Color.black);
+		  textarea_.text_.applyChanges();
+		  textarea_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea_.setTextOffset(30, 28);
+		  textarea_.setOverText("Cod_Máquina");
+		  addObject(textarea_);
+		  
+		  textarea2_ = new GLtextareago(400, 320, 15, 400, 40);
+		  textarea2_.text_.setSize(20);
+		  textarea2_.text_.setColor(Color.black);
+		  textarea2_.text_.applyChanges();
+		  textarea2_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea2_.setTextOffset(30, 28);
+		  textarea2_.setOverText("Nombre");
+		  addObject(textarea2_);
+		  
+		  
+		  textarea3_ = new GLtextareago(400, 400, 15, 400, 40);
+		  textarea3_.text_.setSize(20);
+		  textarea3_.text_.setColor(Color.black);
+		  textarea3_.text_.applyChanges();
+		  textarea3_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea3_.setTextOffset(30, 28);
+		  textarea3_.setOverText("Descripción");
+		  addObject(textarea3_);
+		  
+		  
+		  textarea4_ = new GLtextareago(400, 480, 15, 400, 40);
+		  textarea4_.text_.setSize(20);
+		  textarea4_.text_.setColor(Color.black);
+		  textarea4_.text_.applyChanges();
+		  textarea4_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea4_.setTextOffset(30, 28);
+		  textarea4_.setOverText("Estado");
+		  addObject(textarea4_);
+		  
+		  
+		  text1_ = new GLtextgo(200,260, "Código Máquina:");
+		  text1_.setSize(20);
+		  text1_.setColor(new Color(0, 6, 91));
+		  text1_.setStyle(GLgameConstants.kBOLD);
+		  text1_.setType("Sans");
+		  text1_.applyChanges();
+		  addObject(text1_);
+		  
+		     text2_ = new GLtextgo(200,340, "Nombre Máquina:");
+		  text2_.setSize(20);
+		  text2_.setColor(new Color(0, 6, 91));
+		  text2_.setStyle(GLgameConstants.kBOLD);
+		  text2_.setType("Sans");
+		  text2_.applyChanges();
+		  addObject(text2_);
+		  
+		      text3_ = new GLtextgo(160,420, "Descripción Máquina:");
+		   text3_.setSize(20);
+		   text3_.setColor(new Color(0, 6, 91));
+		   text3_.setStyle(GLgameConstants.kBOLD); 
+		   text3_.setType("Sans");
+		         text3_.applyChanges();
+		   addObject(text3_);
+		  
+		   
+		    text4_ = new GLtextgo(200,500, "Estado Máquina:");
+		    text4_.setSize(20);
+		       text4_.setColor(new Color(0, 6, 91));
+		    text4_.setStyle(GLgameConstants.kBOLD); 
+		    text4_.setType("Sans");
+		       text4_.applyChanges();
+		    addObject(text4_);
+		    
+		    btn2_ = new GLbuttongo(850,550, 400, 80, Color.red);
+		    btn2_.useImages(true);
+		    btn2_.text_.str_ ="Cancelar";
+		    btn2_.text_.setSize(25);
+		    btn2_.text_.setColor(Color.black);
+		    btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		    btn2_.text_.applyChanges();
+		    btn2_.changeTextOffset(150, 42);
+		   addObject(btn2_);
+		   btn3_ = new GLbuttongo(850,450, 400, 80, Color.red);
+		   btn3_.useImages(true);
+		      btn3_.text_.str_ ="Aceptar";
+		      btn3_.text_.setSize(25);
+		   btn3_.text_.setColor(Color.black);
+		   btn3_.text_.setStyle(GLgameConstants.kBOLD);
+		   btn3_.text_.applyChanges();
+		   btn3_.changeTextOffset(150, 42);
+		   addObject(btn3_);
+		  }
+		   
+		 
+	private void NuevaMaq(){
+		   if (btn2_.getisClicked() && init_state_){
+		    proyect_state_ = ProyectState.kInitMaquinas;
+		    destroyObject(btn2_);
+		    destroyObject(text1_);
+		    destroyObject(text2_);
+		    
+		    destroyObject(text3_);
+		    destroyObject(text4_);
+		    
+		    destroyObject(textarea_);
+		    
+		    destroyObject(textarea2_);
+		    
+		             destroyObject(textarea3_);
+		    
+		    destroyObject(textarea4_);
+		    
+		    btn2_ = null;
+		    text1_ = null;
+		    text2_ = null;
+		    text3_ = null;
+		    text4_ = null;
+		    textarea_ = null;
+		    textarea2_ = null;
+		    textarea3_ = null;
+		    textarea4_ = null;
+		   }
+		   else if(btn3_.getisClicked() && init_state_){
+		    
+		   /* table2_.añadir("");*/
+		    
+		    proyect_state_ = ProyectState.kInitMaquinas;
+		    
+		       destroyObject(btn2_);
+		    destroyObject(text1_);
+		    destroyObject(text2_);
+		    
+		    destroyObject(text3_);
+		    destroyObject(text4_);
+		    
+		    destroyObject(textarea_);
+		    
+		    destroyObject(textarea2_);
+		    
+		             destroyObject(textarea3_);
+		    
+		    destroyObject(textarea4_);
+		    
+		    btn2_ = null;
+		    text1_ = null;
+		    text2_ = null;
+		    text3_ = null;
+		    text4_ = null;
+		    textarea_ = null;
+		    textarea2_ = null;
+		    textarea3_ = null;
+		    textarea4_ = null;
+		   
+		   }
+		 }
+
+		  
+	private void Maquinas(){
+		  
+		  if (btn_.getisClicked() && init_state_){
+		            //Menu principal
+		   
+		   proyect_state_ = ProyectState.kInitMainMenu;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table2_);
+		  }
+		  else if(btn2_.getisClicked() && init_state_){
+		   //Nueva máquina
+		      
+		   proyect_state_ = ProyectState.kInitNuevaMaq;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table2_);
+		   
+		  }
+		  
+		  else if(btn4_.getisClicked()){
+		   //Modificar
+		   
+		            proyect_state_ = ProyectState.kInitNuevaMaq;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table2_);
+		   
+		  }
+		  else if(btn5_.getisClicked()){
+		   //Añadir a proyecto
+		  }
+		  else if(btn6_.getisClicked()){
+		   //Eliminar
+		   //table2_.borrar(); 
+		    }
+		  
+		  if(table2_.getGlobalfilaSelected() !=0){
+		   btn4_.enable();
+		   btn5_.enable();
+		   
+		   btn6_.enable();
+		  }else{
+		   btn2_.disable();
+		   btn_.disable();
+		  }
+		 
+		 }
+
+
+
+	private void InitMateriales(){
+		  
+		  
+		  btn_ = new GLbuttongo(100,600, 400, 80, Color.red);
+		  btn_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		  btn_.useImages(true);
+		  btn_.text_.str_ = "Menú principal";
+		  btn_.text_.setSize(25);
+		  btn_.text_.setColor(Color.black);
+		  btn_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn_.text_.applyChanges();
+		  btn_.changeTextOffset(110, 42);
+		  addObject(btn_);
+		  
+		  
+		  btn4_ = new GLbuttongo(950,300, 300, 80, Color.red);
+		  btn4_.useImages(true);
+		  btn4_.text_.str_ = "Modificar";
+		  btn4_.text_.setSize(25);
+		  btn4_.text_.setColor(Color.black);
+		  btn4_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn4_.text_.applyChanges();
+		  btn4_.changeTextOffset(100, 42);
+		  addObject(btn4_);
+		  
+		  btn5_ = new GLbuttongo(950,200, 300, 80, Color.red);
+		  btn5_.useImages(true);
+		  btn5_.text_.str_ = "Añadir a proyecto";
+		  btn5_.text_.setSize(25);
+		  btn5_.text_.setColor(Color.black);
+		  btn5_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn5_.text_.applyChanges();
+		  btn5_.changeTextOffset(50, 42);
+		  addObject(btn5_);
+		  
+		  btn6_ = new GLbuttongo(950,400, 300, 80, Color.red);
+		  btn6_.useImages(true);
+		  btn6_.text_.str_ = "Eliminar";
+		  btn6_.text_.setSize(25);
+		  btn6_.text_.setColor(Color.black);
+		  btn6_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn6_.text_.applyChanges();
+		  btn6_.changeTextOffset(100, 42);
+		  addObject(btn6_);
+		   
+		  
+		  btn2_ = new GLbuttongo(800,600, 400, 80, Color.red);
+		  btn2_.useImages(true);
+		  btn2_.text_.str_ = "Nuevo material";
+		  btn2_.text_.setSize(25);
+		  btn2_.text_.setColor(Color.black);
+		  btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		  btn2_.text_.applyChanges();
+		  btn2_.changeTextOffset(110, 42);
+		  addObject(btn2_);
+		  
+		  
+		  table3_ = new GLtablego(40,250, 6,5, 140, 60,3);
+		  table3_.setHeaderText(0, "Cod_Material");
+		  table3_.setHeaderText(1, "Nombre");
+		  table3_.setHeaderText(2, "Descripción");
+		  table3_.setHeaderText(3, "Tipo");
+		  table3_.setHeaderText(4, "Stock");
+		  table3_.setHeaderText(5, "Precio/Ud.(€)");
+		  table3_.changeHeaderTextOffset(15, 22);
+		  table3_.changeCellTextOffset(15, 22);
+		  addObject(table3_);
+		  
+		  
+		  
+		  table3_.addData(0, 0, "1");
+		  
+		  table3_.addData(1, 0, "Mat 1");
+		  
+		  table3_.addData(2, 0, "Uso vario");
+		  table3_.addData(3, 0, "Impresión 3D");
+		  table3_.addData(4, 0, "20");
+		  
+		  table3_.addData(5, 0, "3.2");
+		  
+		  table3_.addData(0, 1, "2");
+		  
+		  table3_.addData(1, 1, "Mat 2");
+		  
+		  table3_.addData(2, 1, "Uso vario");
+		  table3_.addData(3, 1, "Impresión 3D");
+		  table3_.addData(4, 1, "20");
+		  
+		  table3_.addData(5, 1, "4.2");
+		  
+		  table3_.addData(0, 2, "3");
+		  
+		  table3_.addData(1, 2, "Mat 3");
+		  
+		  table3_.addData(2, 2, "Uso vario");
+		  table3_.addData(3, 2, "Impresión 3D");
+		  table3_.addData(4, 2, "20");
+		  
+		  table3_.addData(5, 2, "3.2");
+		  
+		  table3_.addData(0, 3, "4");
+		  
+		  table3_.addData(1, 3, "Mat 4");
+		  
+		  table3_.addData(2, 3, "Uso vario");
+		  table3_.addData(3, 3, "Impresión 3D");
+		  table3_.addData(4, 3, "20");
+		  
+		  table3_.addData(5, 3, "22");
+		  
+		  table3_.addData(0, 4, "5");
+		  
+		  table3_.addData(1, 4, "Mat 5");
+		  
+		  table3_.addData(2, 4, "Uso vario");
+		  table3_.addData(3, 4, "Impresión 3D");
+		  table3_.addData(4, 4, "20");
+		  
+		  table3_.addData(5, 4, "13.4");
+		    }
+		  
+
+
+	private void Materiales(){
+		  
+		  if (btn_.getisClicked() && init_state_){
+		           //Menu principal
+		   proyect_state_ = ProyectState.kInitMainMenu;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table3_);
+		  }
+
+		  else if(btn2_.getisClicked() && init_state_){
+		   //Nueva máquina
+		      
+		   proyect_state_ = ProyectState.kInitNuevoMat;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table3_);
+		   
+		  }
+		  
+		  else if(btn4_.getisClicked()){
+		   //Modificar
+		   
+		    proyect_state_ = ProyectState.kInitNuevoMat;
+		   
+		   destroyObject(btn_);
+		   destroyObject(btn2_);
+		   destroyObject(btn4_);
+		   destroyObject(btn5_);
+		   
+		   destroyObject(btn6_);
+		   destroyObject(table3_);
+		   
+		  }
+
+		  else if(btn5_.getisClicked()){
+		   //Añadir a proyecto
+		  }
+
+		  else if(btn6_.getisClicked()){
+		   //Eliminar
+		   //table3_.borrar(); 
+		    }
+		  
+		  if(table3_.getGlobalfilaSelected() !=0){
+		   btn4_.enable();
+		   btn5_.enable();
+		   
+		   btn6_.enable();
+		  }
+		else{
+		   btn2_.disable();
+		   btn_.disable();
+		  }
+		 }
+
+
+	private void InitNuevoMat(){
+		  
+		  textarea_ = new GLtextareago(400, 220, 15, 400, 40);
+		  textarea_.text_.setSize(20);
+		  textarea_.text_.setColor(Color.black);
+		  textarea_.text_.applyChanges();
+		  textarea_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea_.setTextOffset(30, 28);
+		  textarea_.setOverText("Cod_Material");
+		  addObject(textarea_);
+		  
+		  textarea2_ = new GLtextareago(400, 300, 15, 400, 40);
+		  textarea2_.text_.setSize(20);
+		  textarea2_.text_.setColor(Color.black);
+		  textarea2_.text_.applyChanges();
+		  textarea2_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea2_.setTextOffset(30, 28);
+		  textarea2_.setOverText("Nombre");
+		  addObject(textarea2_);
+		  
+		  
+		  textarea3_ = new GLtextareago(400, 380, 15, 400, 40);
+		  textarea3_.text_.setSize(20);
+		  textarea3_.text_.setColor(Color.black);
+		  textarea3_.text_.applyChanges();
+		  textarea3_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea3_.setTextOffset(30, 28);
+		  textarea3_.setOverText("Descripción");
+		  addObject(textarea3_);
+		  
+		  
+		  textarea4_ = new GLtextareago(400, 460, 15, 400, 40);
+		  textarea4_.text_.setSize(20);
+		  textarea4_.text_.setColor(Color.black);
+		  textarea4_.text_.applyChanges();
+		  textarea4_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea4_.setTextOffset(30, 28);
+		  textarea4_.setOverText("Tipo material");
+		  addObject(textarea4_);
+		  
+		  textarea5_ = new GLtextareago(400, 540, 15, 400, 40);
+		  textarea5_.text_.setSize(20);
+		  textarea5_.text_.setColor(Color.black);
+		  textarea5_.text_.applyChanges();
+		  textarea5_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea5_.setTextOffset(30, 28);
+		  textarea5_.setOverText("Stock");
+		  addObject(textarea5_);
+		  
+		  textarea6_ = new GLtextareago(400, 620, 15, 400, 40);
+		  textarea6_.text_.setSize(20);
+		  textarea6_.text_.setColor(Color.black);
+		  textarea6_.text_.applyChanges();
+		  textarea6_.setColorChanges(new Color(58, 75, 180), 
+		    new Color(58, 75, 255), 
+		    new Color(86, 101, 255));
+		  textarea6_.setTextOffset(30, 28);
+		  textarea6_.setOverText("Precio/Ud.");
+		  addObject(textarea6_);
+		  
+		  
+		  text1_ = new GLtextgo(200,240, "Código Material:");
+		  text1_.setSize(20);
+		  text1_.setColor(new Color(0, 6, 91));
+		  text1_.setStyle(GLgameConstants.kBOLD);
+		  text1_.setType("Sans");
+		  text1_.applyChanges();
+		  addObject(text1_);
+		  
+		     text2_ = new GLtextgo(200,320, "Nombre Material:");
+		  text2_.setSize(20);
+		  text2_.setColor(new Color(0, 6, 91));
+		  text2_.setStyle(GLgameConstants.kBOLD);
+		  text2_.setType("Sans");
+		  text2_.applyChanges();
+		  addObject(text2_);
+		  
+		      text3_ = new GLtextgo(160,400, "Descripción Material:");
+		   text3_.setSize(20);
+		   text3_.setColor(new Color(0, 6, 91));
+		   text3_.setStyle(GLgameConstants.kBOLD); 
+		   text3_.setType("Sans");
+		         text3_.applyChanges();
+		   addObject(text3_);
+		  
+		   
+		    text4_ = new GLtextgo(200,480, "Tipo Material:");
+		    text4_.setSize(20);
+		       text4_.setColor(new Color(0, 6, 91));
+		    text4_.setStyle(GLgameConstants.kBOLD); 
+		    text4_.setType("Sans");
+		       text4_.applyChanges();
+		    addObject(text4_);
+		    
+		    text5_ = new GLtextgo(200,560, "Stock Material:");
+		    text5_.setSize(20);
+		       text5_.setColor(new Color(0, 6, 91));
+		    text5_.setStyle(GLgameConstants.kBOLD); 
+		    text5_.setType("Sans");
+		       text5_.applyChanges();
+		    addObject(text5_);
+		    
+		    text6_ = new GLtextgo(180,640, "Precio/Unidad (€):");
+		    text6_.setSize(20);
+		       text6_.setColor(new Color(0, 6, 91));
+		    text6_.setStyle(GLgameConstants.kBOLD); 
+		    text6_.setType("Sans");
+		       text6_.applyChanges();
+		    addObject(text6_);
+		    
+		    btn2_ = new GLbuttongo(850,450, 400, 80, Color.red);
+		    btn2_.useImages(true);
+		    btn2_.text_.str_ ="Cancelar";
+		    btn2_.text_.setSize(25);
+		    btn2_.text_.setColor(Color.black);
+		    btn2_.text_.setStyle(GLgameConstants.kBOLD);
+		    btn2_.text_.applyChanges();
+		    btn2_.changeTextOffset(150, 42);
+		   addObject(btn2_);
+		   btn3_ = new GLbuttongo(850,350, 400, 80, Color.red);
+		   btn3_.useImages(true);
+		      btn3_.text_.str_ ="Aceptar";
+		      btn3_.text_.setSize(25);
+		   btn3_.text_.setColor(Color.black);
+		   btn3_.text_.setStyle(GLgameConstants.kBOLD);
+		   btn3_.text_.applyChanges();
+		   btn3_.changeTextOffset(150, 42);
+		   addObject(btn3_);
+		  }
+		   
+		 
+	private void NuevoMat(){
+		   if (btn2_.getisClicked() && init_state_){
+		    proyect_state_ = ProyectState.kInitMateriales;
+		    destroyObject(btn2_);
+		    destroyObject(text1_);
+		    destroyObject(text2_);
+		    
+		    destroyObject(text3_);
+		    destroyObject(text4_);
+		    
+		    destroyObject(text5_);
+		    
+		    destroyObject(text6_);
+		    
+		    destroyObject(textarea_);
+		    
+		    destroyObject(textarea2_);
+		    
+		             destroyObject(textarea3_);
+		    
+		    destroyObject(textarea4_);
+		    
+		    destroyObject(textarea5_);
+		    
+		    destroyObject(textarea6_);
+		    
+		    btn2_ = null;
+		    text1_ = null;
+		    text2_ = null;
+		    text3_ = null;
+		    text4_ = null;
+		    text5_= null;
+		    text6_= null;
+		    textarea_ = null;
+		    textarea2_ = null;
+		    textarea3_ = null;
+		    textarea4_ = null;
+		    textarea5_ = null;
+		    textarea6_= null;
+		   }
+		   else if(btn3_.getisClicked() && init_state_){
+		    
+		   /* table2_.añadir("");*/
+		    
+		    proyect_state_ = ProyectState.kInitMateriales;
+		    
+		       destroyObject(btn2_);
+		    destroyObject(text1_);
+		    destroyObject(text2_);
+		    
+		    destroyObject(text3_);
+		    destroyObject(text4_);
+		    
+		    destroyObject(text5_);
+		    
+		    destroyObject(text6_);
+		    
+		    destroyObject(textarea_);
+		    
+		    destroyObject(textarea2_);
+		    
+		             destroyObject(textarea3_);
+		    
+		    destroyObject(textarea4_);
+		    
+		    destroyObject(textarea5_);
+		    
+		    destroyObject(textarea6_);
+		    
+		    btn2_ = null;
+		    text1_ = null;
+		    text2_ = null;
+		    text3_ = null;
+		    text4_ = null;
+		    text5_= null;
+		    text6_= null;
+		    textarea_ = null;
+		    textarea2_ = null;
+		    textarea3_ = null;
+		    textarea4_ = null;
+		    textarea5_ = null;
+		    textarea6_= null;
+		   }
+		 }
 	
 }
 

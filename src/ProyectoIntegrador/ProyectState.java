@@ -14,7 +14,16 @@ public abstract class ProyectState {
 	public static final int kAddProyectos = 10;
 	public static final int kInitGestionUsuariosProyectos = 11;
 	public static final int kGestionUsuariosProyectos = 12;
-	public static final int kMaquinas = 600;
+	
+	public static final int kInitMaquinas = 101;
+	public static final int kMaquinas = 102;
+	public static final int kInitNuevaMaq = 103;
+	public static final int kNuevaMaq = 104;
+	public static final int kInitMateriales = 105;
+	public static final int kMateriales = 106;
+	public static final int kInitNuevoMat = 107;
+	public static final int kNuevoMat = 108;
+	
 	
 
 }
