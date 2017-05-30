@@ -13,6 +13,8 @@ public class ProyectoIntegrador extends GLgraphicLib{
 	GLbuttongo btn4_;
 	GLbuttongo btn5_;
 	GLbuttongo btn6_;
+	GLbuttongo btn7_;
+	GLbuttongo btn8_;
 	
 	GLtextareago textarea_;
 	GLtextareago textarea2_;
@@ -257,6 +259,9 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		destroyObject(img1_);
 		destroyObject(img2_);
 		destroyObject(img3_);
+		destroyObject(printerlogo_);
+		destroyObject(uemlogo_);
+		destroyObject(logofablab_);
 		btn_ = null;
 		btn2_ = null;
 		textarea_ = null;
@@ -264,6 +269,9 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		img1_ = null;
 		img2_ = null;
 		img3_ = null;
+		printerlogo_ = null;
+		uemlogo_ = null;
+		logofablab_ = null;
 	}
 	
 	private void vistaRegister(){
@@ -387,66 +395,140 @@ public class ProyectoIntegrador extends GLgraphicLib{
 		}
 	}
 	
-	private void vistaMainMenu(){
-		btn_ = new GLbuttongo(50,250, 400, 80, Color.red);
+	private void vistaMainMenu(){			
+		printerlogo_ = new GLimagego(46,5, 128, 128, 
+				"./sprites/3d_printer_logo.png");
+		addObject(printerlogo_);
+		
+		uemlogo_ = new GLimagego(950, 5, 320, 72,
+				"./sprites/LogoUEM.png");
+		addObject(uemlogo_);
+		
+		
+		logofablab_ = new GLimagego(220, 20, 460, 175, 
+				"./sprites/LogoFablab.png");
+		addObject(logofablab_);
+		
+		btn_ = new GLbuttongo(160,250, 400, 80, Color.red);
 		btn_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
 		btn_.useImages(true);
-		btn_.text_.str_ = "Proyectos";
+		btn_.text_.str_ = "Usuarios";
 		btn_.text_.setSize(25);
 		btn_.text_.setColor(Color.black);
 		btn_.text_.setStyle(GLgameConstants.kBOLD);
 		btn_.text_.applyChanges();
 		btn_.changeTextOffset(60, 42);
 		addObject(btn_);
-		
-		textarea_ = new GLtextareago(300,300, 20, 400, 30);
-		textarea_.text_.setSize(35);
-		textarea_.text_.setColor(Color.black);
-		textarea_.text_.applyChanges();
-		textarea_.setColorChanges(Color.red, Color.yellow, new Color(180,200,50));
-		textarea_.setTextOffset(40, 20);
-		textarea_.setOverText("Hola");
-		addObject(textarea_);
-		
-		btn2_ = new GLbuttongo(800,250, 80, 80, Color.red);
-		btn2_.loadImages("./sprites/cancel.png", "./sprites/cancel_over.png", "./sprites/cancel_clicked.png");
+
+		btn2_ = new GLbuttongo(720,250, 400, 80, Color.red);
+		btn2_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
 		btn2_.useImages(true);
+		btn2_.text_.str_ = "Proyectos";
 		btn2_.text_.setSize(25);
 		btn2_.text_.setColor(Color.black);
 		btn2_.text_.setStyle(GLgameConstants.kBOLD);
 		btn2_.text_.applyChanges();
-		btn2_.changeTextOffset(115, 42);
+		btn2_.changeTextOffset(60, 42);
 		addObject(btn2_);
 		
-		table1_ = new GLtablego(30,400, 5,6, 200, 30,5);
-		table1_.setHeaderText(0, "Nombre");
-		table1_.setHeaderText(1, "Apellidos");
-		table1_.setHeaderText(2, "Ciudad");
-		table1_.setHeaderText(3, "Correo");
-		table1_.setHeaderText(4, "Tipo usuario");
-		table1_.changeHeaderTextOffset(15, 22);
-		table1_.changeCellTextOffset(15, 22);
-		addObject(table1_);
+		btn3_ = new GLbuttongo(160,350, 400, 80, Color.red);
+		btn3_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn3_.useImages(true);
+		btn3_.text_.str_ = "Proveedores";
+		btn3_.text_.setSize(25);
+		btn3_.text_.setColor(Color.black);
+		btn3_.text_.setStyle(GLgameConstants.kBOLD);
+		btn3_.text_.applyChanges();
+		btn3_.changeTextOffset(60, 42);
+		addObject(btn3_);
+		
+		btn4_ = new GLbuttongo(720,350, 400, 80, Color.red);
+		btn4_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn4_.useImages(true);
+		btn4_.text_.str_ = "Pedidos";
+		btn4_.text_.setSize(25);
+		btn4_.text_.setColor(Color.black);
+		btn4_.text_.setStyle(GLgameConstants.kBOLD);
+		btn4_.text_.applyChanges();
+		btn4_.changeTextOffset(60, 42);
+		addObject(btn4_);
+		
+		btn5_ = new GLbuttongo(160,450, 400, 80, Color.red);
+		btn5_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn5_.useImages(true);
+		btn5_.text_.str_ = "Materiales";
+		btn5_.text_.setSize(25);
+		btn5_.text_.setColor(Color.black);
+		btn5_.text_.setStyle(GLgameConstants.kBOLD);
+		btn5_.text_.applyChanges();
+		btn5_.changeTextOffset(60, 42);
+		addObject(btn5_);
+		
+		btn6_ = new GLbuttongo(720,450, 400, 80, Color.red);
+		btn6_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn6_.useImages(true);
+		btn6_.text_.str_ = "Máquinas";
+		btn6_.text_.setSize(25);
+		btn6_.text_.setColor(Color.black);
+		btn6_.text_.setStyle(GLgameConstants.kBOLD);
+		btn6_.text_.applyChanges();
+		btn6_.changeTextOffset(60, 42);
+		addObject(btn6_);
+		
+		btn7_ = new GLbuttongo(160,550, 400, 80, Color.red);
+		btn7_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn7_.useImages(true);
+		btn7_.text_.str_ = "Eventos";
+		btn7_.text_.setSize(25);
+		btn7_.text_.setColor(Color.black);
+		btn7_.text_.setStyle(GLgameConstants.kBOLD);
+		btn7_.text_.applyChanges();
+		btn7_.changeTextOffset(60, 42);
+		addObject(btn7_);
+		
+		btn8_ = new GLbuttongo(720,550, 400, 80, Color.red);
+		btn8_.loadImages("./Sprites/button.png", "./Sprites/button_over.png", "./Sprites/button_clicked.png");
+		btn8_.useImages(true);
+		btn8_.text_.str_ = "Log out";
+		btn8_.text_.setSize(25);
+		btn8_.text_.setColor(Color.black);
+		btn8_.text_.setStyle(GLgameConstants.kBOLD);
+		btn8_.text_.applyChanges();
+		btn8_.changeTextOffset(60, 42);
+		addObject(btn8_);
+		
+		
 												
 	}
 	
 	private void controladorMainMenu(){
-		if(btn_.getisClicked()){
+		if(btn2_.getisClicked()){
 			freeMainMenu();
 			proyect_state_ = ProyectState.kInitProyectos;
+		}else if(btn8_.getisClicked()){
+			freeMainMenu();
+			proyect_state_ = ProyectState.kInitLogin;
 		}
 	}
 	
 	private void freeMainMenu(){
 		destroyObject(btn_);
 		destroyObject(btn2_);
-		destroyObject(table1_);
-		destroyObject(textarea_);
+		destroyObject(btn3_);
+		destroyObject(btn4_);
+		destroyObject(btn5_);
+		destroyObject(btn6_);
+		destroyObject(btn7_);
+		destroyObject(btn8_);
 		destroyObject(logofablab_);
 		btn_ = null;
 		btn2_ = null;
-		table1_ = null;
-		textarea_ = null;
+		btn3_ = null;
+		btn4_ = null;
+		btn5_ = null;
+		btn6_ = null;
+		btn7_ = null;
+		btn8_ = null;
 		logofablab_ = null;
 	}
 	
